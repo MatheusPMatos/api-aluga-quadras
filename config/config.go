@@ -8,6 +8,7 @@ import (
 
 type Environments struct {
 	ApiPort string `env:"API_PORT"`
+	ApiHost string `end:"API_HOST"`
 }
 
 func GetEnvs() Environments {
