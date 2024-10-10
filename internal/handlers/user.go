@@ -5,14 +5,32 @@ import "github.com/gin-gonic/gin"
 type userHandle struct {
 }
 
-func (u *userHandle) GetUsers(c *gin.Context) {
+// Delete implements UserHandler.
+func (u *userHandle) Delete(c *gin.Context) {
 	panic("unimplemented")
 }
 
-type UserHangle interface {
-	GetUsers(c *gin.Context)
+// Edit implements UserHandler.
+func (u *userHandle) Edit(c *gin.Context) {
+	panic("unimplemented")
 }
 
-func NewUserHandle() UserHangle {
+// GetById implements UserHandler.
+func (u *userHandle) GetById(c *gin.Context) {
+	panic("unimplemented")
+}
+
+func (u *userHandle) Get(c *gin.Context) {
+	panic("unimplemented")
+}
+
+type UserHandler interface {
+	Get(c *gin.Context)
+	Edit(c *gin.Context)
+	GetById(c *gin.Context)
+	Delete(c *gin.Context)
+}
+
+func NewUserHandle() UserHandler {
 	return &userHandle{}
 }
