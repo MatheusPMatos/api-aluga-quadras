@@ -1,5 +1,7 @@
 package types
 
+import "gorm.io/gorm"
+
 type UserType int
 
 const (
@@ -9,10 +11,11 @@ const (
 )
 
 type User struct {
-	Id       uint
+	gorm.Model
 	Name     string
 	Cpf      string
 	Email    string
 	Password string
 	UsrType  UserType
+	Products []Product `gorm:"foreignkey:UserID"`
 }

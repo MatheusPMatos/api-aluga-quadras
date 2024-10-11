@@ -8,7 +8,13 @@ import (
 
 type Environments struct {
 	ApiPort string `env:"API_PORT"`
-	ApiHost string `end:"API_HOST"`
+	ApiHost string `env:"API_HOST"`
+
+	DbHost string `env:"DB_HOST"`
+	DbPort string `env:"DB_PORT"`
+	DbUser string `env:"DB_USER"`
+	DbPass string `env:"DB_PASS"`
+	DbName string `env:"DB_NAME"`
 }
 
 func GetEnvs() Environments {

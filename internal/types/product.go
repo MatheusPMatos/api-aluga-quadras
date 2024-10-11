@@ -1,5 +1,7 @@
 package types
 
+import "gorm.io/gorm"
+
 type ProductType int
 
 const (
@@ -9,7 +11,9 @@ const (
 )
 
 type Product struct {
+	gorm.Model
 	Name        string
 	Description string
 	ProdType    ProductType
+	UserID      uint
 }

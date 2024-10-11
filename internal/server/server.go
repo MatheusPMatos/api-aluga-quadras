@@ -1,8 +1,13 @@
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/MatheusPMatos/api-aluga-quadras/config"
+	"github.com/MatheusPMatos/api-aluga-quadras/internal/handlers"
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
 
-func NewServer() *gin.Engine {
+func NewServer(db *gorm.DB, envs config.Environments) *gin.Engine {
 	r := gin.Default()
 	r.Use(func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
@@ -14,6 +19,6 @@ func NewServer() *gin.Engine {
 		}
 		c.Next()
 	})
-	router(r)
+	router(r, handlers.NewComander(db, envs))
 	return r
 }
