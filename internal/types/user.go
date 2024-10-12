@@ -12,10 +12,11 @@ const (
 
 type User struct {
 	gorm.Model
-	Name     string
-	Cpf      string
-	Email    string
-	Password string
-	UsrType  UserType
-	Products []Product `gorm:"foreignkey:UserID"`
+	Name         string
+	Cpf          string
+	Email        string
+	Password     string
+	UsrType      UserType
+	Products     []Product     `gorm:"foreignkey:UserID"`
+	Reservations []Reservation `gorm:"foreignkey:UserID"`
 }

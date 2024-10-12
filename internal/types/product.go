@@ -16,4 +16,5 @@ type Product struct {
 	Description string
 	ProdType    ProductType
 	UserID      uint
+	Scheds      []Schedule `gorm:"foreignkey:ProductID"`
 }

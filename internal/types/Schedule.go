@@ -1,11 +1,17 @@
 package types
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Schedule struct {
-	InitialTime time.Time
-	FinalTime   time.Time
-	Weekday     time.Weekday
-	Enable      bool
-	ProductID   uint
+	gorm.Model
+	InitialTime  time.Time
+	FinalTime    time.Time
+	Weekday      time.Weekday
+	Enable       bool
+	ProductID    uint
+	Reservations []Reservation `gorm:"foreignkey:ScheduleID"`
 }
