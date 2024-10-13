@@ -1,6 +1,9 @@
 package service
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/repository"
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/types"
 )
@@ -11,7 +14,14 @@ type reservation struct {
 
 // Create implements Reservation.
 func (r *reservation) Create(reserva types.Reservation) (*types.Reservation, error) {
-	panic("unimplemented")
+	reservaJaExistente, err := r.repo.GetByDate(reserva.ID, reserva.Date)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao gerar reserva, erro: %s", err.Error())
+	}
+	if reservaJaExistente != nil {
+		return nil, errors.New("HORARIO RESERVADO")
+	}
+	return r.repo.Create(reserva)
 }
 
 // GetByProductID implements Reservation.

@@ -12,11 +12,13 @@ type reservation struct {
 }
 
 // GetByDate implements Reservation.
-func (r *reservation) GetByDate(date time.Time) ([]types.Reservation, error) {
-	panic("Metodo GetByData Não implementado!")
-	var reservas = []types.Reservation{}
-	err := r.DB.First(&types.Reservation{}).Error
-	return reservas, err
+func (r *reservation) GetByDate(scheduleID uint, date time.Time) (*types.Reservation, error) {
+
+	var reservas = types.Reservation{}
+	err := r.DB.
+		Where(&types.Reservation{ScheduleID: scheduleID}).
+		Where("DATE(created_at) = DATE(?)", date).First(&reservas).Error
+	return &reservas, err
 }
 
 // Create implements Reservation.
@@ -59,7 +61,7 @@ type Reservation interface {
 	Delete(reservaId uint) error
 	GetByUserId(userID uint) ([]types.Reservation, error)
 	GetByProductID(productId uint) ([]types.Reservation, error)
-	GetByDate(date time.Time) ([]types.Reservation, error)
+	GetByDate(scheduleID uint, date time.Time) (*types.Reservation, error)
 }
 
 func NewReservantionRepository(db *gorm.DB) Reservation {
