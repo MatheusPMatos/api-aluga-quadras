@@ -10,6 +10,8 @@ type Environments struct {
 	ApiPort string `env:"API_PORT"`
 	ApiHost string `env:"API_HOST"`
 
+	TokenSecret string `env:"TOKEN_SECRET"`
+
 	DbHost string `env:"DB_HOST"`
 	DbPort string `env:"DB_PORT"`
 	DbUser string `env:"DB_USER"`

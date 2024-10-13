@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/repository"
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/types"
+	"github.com/MatheusPMatos/api-aluga-quadras/internal/utils"
 )
 
 type user struct {
@@ -16,6 +17,7 @@ func (u *user) Delete(userId uint) error {
 
 // Create implements User.
 func (u *user) Create(user types.User) (*types.User, error) {
+	user.Password = utils.ShaEncode(user.Password)
 	return u.repo.Create(user)
 }
 

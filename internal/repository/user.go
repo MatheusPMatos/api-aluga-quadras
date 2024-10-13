@@ -9,6 +9,13 @@ type user struct {
 	DB *gorm.DB
 }
 
+// GetByEmail implements User.
+func (u *user) GetByEmail(email string) (*types.User, error) {
+	var user types.User
+	err := u.DB.Where(types.User{Email: email}).First(&user).Error
+	return &user, err
+}
+
 // Create implements User.
 func (u *user) Create(user types.User) (*types.User, error) {
 	result := u.DB.Create(&user)
@@ -46,6 +53,7 @@ type User interface {
 	Update(user types.User) (*types.User, error)
 	Delete(userID uint) error
 	GetById(userId uint) (*types.User, error)
+	GetByEmail(email string) (*types.User, error)
 }
 
 func NewUserRepository(db *gorm.DB) User {

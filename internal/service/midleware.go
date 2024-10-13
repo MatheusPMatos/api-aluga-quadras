@@ -1,6 +1,9 @@
 package service
 
 import (
+	"net/http"
+	"strings"
+
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/repository"
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -13,7 +16,23 @@ type midleware struct {
 
 // Auth implements Midleware.
 func (m *midleware) Auth() gin.HandlerFunc {
-	panic("unimplemented")
+	return func(c *gin.Context) {
+		bearerToken := c.GetHeader("Authorization")
+
+		token := strings.TrimPrefix(bearerToken, "Bearer ")
+
+		claim, err := m.jwt.DecodeAccessToken(token)
+		if err != nil {
+			c.AbortWithError(http.StatusUnauthorized, err)
+			return
+		}
+		id, err := claim.GetSubject()
+		if err != nil {
+			c.AbortWithError(http.StatusUnauthorized, err)
+			return
+		}
+		c.Set("user", id)
+	}
 }
 
 // AuthAdm implements Midleware.
