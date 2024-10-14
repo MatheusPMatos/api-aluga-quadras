@@ -52,7 +52,6 @@ jobs:
             # Ir para o diretório da aplicação
             cd /
             cd home/docker
-            sudo su
             # Fazer o pull da última imagem do Docker Hub
             docker-compose pull  # Atualizar as imagens com a versão mais recente
             docker-compose up -d  # Iniciar o serviço em segundo plano com o Docker Compose
