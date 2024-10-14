@@ -39,10 +39,6 @@ jobs:
     needs: build  # Só executa se o job 'build_and_push' tiver sucesso
 
     steps:
-      # Check out the repository again (optional, if you need it)
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       # Connect to EC2 instance via SSH
       - name: Connect to EC2 and Deploy
         uses: appleboy/ssh-action@v0.1.5
@@ -52,6 +48,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}  # Adicione sua chave privada nas GitHub Secrets
           port: 22
           script: |
+            echo "Conexão SSH bem-sucedida!"
             # Ir para o diretório da aplicação
             cd /
             cd home/docker
