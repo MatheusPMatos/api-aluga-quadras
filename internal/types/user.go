@@ -14,7 +14,7 @@ type User struct {
 	gorm.Model
 	Name         string
 	Cpf          string
-	Email        string
+	Email        string `gorm:"uniqueIndex"`
 	Password     string
 	UsrType      UserType
 	Products     []Product     `gorm:"foreignkey:UserID"`
