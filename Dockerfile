@@ -1,21 +1,16 @@
-
-FROM golang:1.18-alpine AS builder
-
-WORKDIR /app
-
+FROM golang:1.21.3-alpine3.17 as base
+RUN apk update
+WORKDIR /src/apialugaquadras
 COPY go.mod go.sum ./
-RUN go mod download
-
 COPY . .
+RUN go build -o API-ALUGA-QUADRAS ./cmd/api
 
-RUN go build -o /api
+FROM alpine:3.17 as binary
 
-FROM alpine:latest
+RUN apk --no-cache add tzdata
+ENV TZ=America/Sao_Paulo
 
-WORKDIR /root/
+COPY --from=base /src/apialugaquadras/apialugaquadras .
 
-COPY --from=builder /api .
-
-EXPOSE 80
-
-CMD ["./api"]
+EXPOSE 8080
+CMD [ "./apialugaquadras" ]
