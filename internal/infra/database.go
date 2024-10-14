@@ -23,6 +23,8 @@ func ConectaComBancodeDados(envs config.Environments) (*gorm.DB, error) {
 	DB.AutoMigrate(
 		&types.User{},
 		&types.Product{},
+		&types.Schedule{},
+		&types.Reservation{},
 	)
 	return DB, nil
 
