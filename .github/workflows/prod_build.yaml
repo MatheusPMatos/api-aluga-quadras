@@ -25,7 +25,7 @@ jobs:
     - name: Get Api version
       id: extract_version
       run: |
-        VERSION=$(grep 'const Version' main.go | awk -F\" '{print $2}')
+        VERSION=$(grep 'const Version' .cmd/main.go | awk -F\" '{print $2}')
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Build and push Docker image
@@ -34,3 +34,28 @@ jobs:
         context: .
         push: true
         tags: matheuspmatos/api_aluga_quadra_prod:${{ env.VERSION }}
+  deploy_to_ec2:
+    runs-on: ubuntu-latest
+    needs: build  # Só executa se o job 'build_and_push' tiver sucesso
+
+    steps:
+      # Check out the repository again (optional, if you need it)
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Connect to EC2 instance via SSH
+      - name: Connect to EC2 and Deploy
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}  # Adicione sua chave privada nas GitHub Secrets
+          port: 22
+          script: |
+            # Ir para o diretório da aplicação
+            cd /
+            cd home/docker
+            sudo su
+            # Fazer o pull da última imagem do Docker Hub
+            docker-compose pull  # Atualizar as imagens com a versão mais recente
+            docker-compose up -d  # Iniciar o serviço em segundo plano com o Docker Compose
