@@ -13,4 +13,4 @@ ENV TZ=America/Sao_Paulo
 COPY --from=base /src/api/apiRun .
 
 EXPOSE 8080
-CMD [ "./apialugaquadras" ]
+CMD [ "./apiRun" ]
