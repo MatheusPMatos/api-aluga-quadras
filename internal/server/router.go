@@ -11,6 +11,7 @@ func router(router *gin.Engine, cmd handlers.Comander) {
 		unAuth := main.Group("/user")
 		{
 			unAuth.POST("", cmd.User.Create)
+			unAuth.POST("/auth", cmd.Auth.Login)
 		}
 
 		user := main.Group("/user", cmd.Midlewares.Auth())

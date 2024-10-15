@@ -12,6 +12,7 @@ type Comander struct {
 	User       UserHandler
 	Products   Product
 	Midlewares service.Midleware
+	Auth       Auth
 }
 
 func NewComander(db *gorm.DB, envs config.Environments) Comander {
@@ -21,6 +22,9 @@ func NewComander(db *gorm.DB, envs config.Environments) Comander {
 		User:       NewUserHandle(service.NewUserService(userRepo)),
 		Products:   NewProductHandler(service.NewProductService(repository.NewProductRepository(db))),
 		Midlewares: service.NewMidleware(userRepo, utils.NewJwt(envs)),
+		Auth: NewAuthHandle(
+			service.NewAuthService(utils.NewJwt(envs), userRepo),
+		),
 	}
 
 }
