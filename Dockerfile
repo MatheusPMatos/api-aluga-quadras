@@ -12,5 +12,5 @@ ENV TZ=America/Sao_Paulo
 
 COPY --from=base /src/api/apiRun .
 
-EXPOSE 8080
+EXPOSE 80
 CMD [ "./apiRun" ]
