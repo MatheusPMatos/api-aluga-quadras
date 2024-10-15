@@ -19,6 +19,7 @@ func (u *user) GetByEmail(email string) (*types.User, error) {
 // Create implements User.
 func (u *user) Create(user types.User) (*types.User, error) {
 	result := u.DB.Create(&user)
+	user.Password = ""
 	return &user, result.Error
 }
 
@@ -32,6 +33,7 @@ func (u *user) Delete(userID uint) error {
 func (u *user) GetById(userId uint) (*types.User, error) {
 	var user types.User
 	err := u.DB.First(&user, userId).Error
+	user.Password = ""
 	return &user, err
 }
 
@@ -45,6 +47,7 @@ func (u *user) Update(user types.User) (*types.User, error) {
 			"email":    user.Email,
 			"usr_type": user.UsrType,
 			"password": user.Password}).Error
+	user.Password = ""
 	return &user, err
 }
 
