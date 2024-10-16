@@ -13,7 +13,6 @@ type reservation struct {
 
 // GetByDate implements Reservation.
 func (r *reservation) GetByDate(scheduleID uint, date time.Time) (*types.Reservation, error) {
-
 	var reservas = types.Reservation{}
 	err := r.DB.
 		Where(&types.Reservation{ScheduleID: scheduleID}).

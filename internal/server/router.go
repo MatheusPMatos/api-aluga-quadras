@@ -19,6 +19,16 @@ func router(router *gin.Engine, cmd handlers.Comander) {
 			user.GET("/:id", cmd.User.GetById)
 			user.DELETE("/:id", cmd.User.Delete)
 			user.PUT("", cmd.User.Edit)
+			user.GET("/info", cmd.User.UserInfo)
+		}
+
+		reservas := main.Group("/reserva")
+		{
+			reservas.GET("/byproduct/:id", cmd.Rservation.GetByProduct)
+			reservas.GET("/byuser/:id", cmd.Rservation.GetByUser)
+			reservas.POST("", cmd.Rservation.Create)
+			reservas.PUT("", cmd.Rservation.Edit)
+			reservas.DELETE("/:id", cmd.Rservation.Delete)
 		}
 
 	}

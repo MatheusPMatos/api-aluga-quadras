@@ -13,6 +13,7 @@ type product struct {
 
 // Create implements Product.
 func (p *product) Create(product types.Product) (*types.Product, error) {
+	//SOMENTE VENDEDOR PODE CRIAR
 	product.Scheds = createSchedule()
 	return p.repo.Create(product)
 }
@@ -34,6 +35,7 @@ func createSchedule() []types.Schedule {
 
 // Delete implements Product.
 func (p *product) Delete(productId uint) error {
+	//SOMENTE VENDEDOR PODE DELETAR
 	return p.repo.Delete(productId)
 }
 
@@ -49,6 +51,7 @@ func (p *product) GetById(productId uint) (*types.Product, error) {
 
 // Update implements Product.
 func (p *product) Update(product types.Product) (*types.Product, error) {
+	//SOMENTE VENDEDOR PODE ALTERAR
 	return p.repo.Update(product)
 }
 

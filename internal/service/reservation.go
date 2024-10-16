@@ -36,11 +36,18 @@ func (r *reservation) GetByUserId(userID uint) ([]types.Reservation, error) {
 
 // Update implements Reservation.
 func (r *reservation) Update(reserva types.Reservation) (*types.Reservation, error) {
+	//IMPLEMENTAR REGRAS DE EDICAO DA RESERVA
+	//NAO ALTERAR A MENOS DE 24H DO HORARIO
+	//NAO ALTERAR SE PAGO
 	return r.repo.Update(reserva)
 }
 
 // delete implements Reservation.
 func (r *reservation) Delete(reservaId uint) error {
+	//TODO: LOGICA PARA DELECAO
+	// NAO ANTES DE 24H
+	//NAO APOS PAGO
+	//
 	return r.repo.Delete(reservaId)
 }
 

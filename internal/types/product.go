@@ -12,9 +12,10 @@ const (
 
 type Product struct {
 	gorm.Model
-	Name        string
-	Description string
-	ProdType    ProductType
-	UserID      uint
-	Scheds      []Schedule `gorm:"foreignkey:ProductID"`
+	Name        string      `json:"name" validate:"required"`
+	Description string      `json:"description" validate:"max=240"`
+	ProdType    ProductType `json:"prod_type" validate:"gte=1,lte=2"`
+	UserID      uint        `json:"user_id"`
+	Price       float64     `json:"price" validate:"required,numeric"`
+	Scheds      []Schedule  `json:"schedule,omitempty" gorm:"foreignkey:ProductID"`
 }
