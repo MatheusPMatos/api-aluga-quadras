@@ -2,6 +2,7 @@ package service
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/repository"
@@ -31,7 +32,13 @@ func (m *midleware) Auth() gin.HandlerFunc {
 			c.AbortWithError(http.StatusUnauthorized, err)
 			return
 		}
-		c.Set("user", id)
+
+		idUInt, err := strconv.Atoi(id)
+		if err != nil {
+			c.AbortWithError(http.StatusUnauthorized, err)
+			return
+		}
+		c.Set("user", idUInt)
 		c.Next()
 	}
 }
