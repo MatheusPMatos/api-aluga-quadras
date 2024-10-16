@@ -41,7 +41,7 @@ func (r *reservation) Create(c *gin.Context) {
 	}
 	err = r.validate.Struct(reserva)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, fmt.Sprintf("validation error: %s", err.Error()))
+		c.JSON(http.StatusBadRequest, fmt.Sprintf("validation error: %s", err.Error()))
 		return
 	}
 
@@ -64,7 +64,7 @@ func (r *reservation) Edit(c *gin.Context) {
 	}
 	err = r.validate.Struct(reserva)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, fmt.Sprintf("validation error: %s", err.Error()))
+		c.JSON(http.StatusBadRequest, fmt.Sprintf("validation error: %s", err.Error()))
 		return
 	}
 

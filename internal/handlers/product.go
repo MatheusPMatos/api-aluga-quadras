@@ -50,7 +50,7 @@ func (p *product) Create(c *gin.Context) {
 	}
 	err = p.validator.Struct(product)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, fmt.Sprintf("validation error: %s", err.Error()))
+		c.JSON(http.StatusBadRequest, fmt.Sprintf("validation error: %s", err.Error()))
 		return
 	}
 
@@ -88,7 +88,7 @@ func (p *product) Edit(c *gin.Context) {
 	}
 	err = p.validator.Struct(product)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, fmt.Sprintf("validation error: %s", err.Error()))
+		c.JSON(http.StatusBadRequest, fmt.Sprintf("validation error: %s", err.Error()))
 		return
 	}
 	usr, err := p.sv.Create(product)

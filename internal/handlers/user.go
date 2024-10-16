@@ -54,7 +54,7 @@ func (u *userHandle) Edit(c *gin.Context) {
 	}
 	err = u.validator.Struct(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, fmt.Sprintf("validation error: %s", err.Error()))
+		c.JSON(http.StatusBadRequest, fmt.Sprintf("validation error: %s", err.Error()))
 		return
 	}
 	usr, err := u.sv.Update(user)
@@ -92,7 +92,7 @@ func (u *userHandle) Create(c *gin.Context) {
 	}
 	err = u.validator.Struct(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, fmt.Sprintf("validation error: %s", err.Error()))
+		c.JSON(http.StatusBadRequest, fmt.Sprintf("validation error: %s", err.Error()))
 		return
 	}
 
