@@ -2,7 +2,6 @@ package service
 
 import (
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/repository"
@@ -22,23 +21,12 @@ func (m *midleware) Auth() gin.HandlerFunc {
 
 		token := strings.TrimPrefix(bearerToken, "Bearer ")
 
-		claim, err := m.jwt.DecodeAccessToken(token)
+		id, err := m.jwt.DecodeAccessToken(token)
 		if err != nil {
-			c.AbortWithError(http.StatusUnauthorized, err)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, err.Error())
 			return
 		}
-		id, err := claim.GetSubject()
-		if err != nil {
-			c.AbortWithError(http.StatusUnauthorized, err)
-			return
-		}
-
-		idUInt, err := strconv.Atoi(id)
-		if err != nil {
-			c.AbortWithError(http.StatusUnauthorized, err)
-			return
-		}
-		c.Set("user", idUInt)
+		c.Set("user", id)
 		c.Next()
 	}
 }

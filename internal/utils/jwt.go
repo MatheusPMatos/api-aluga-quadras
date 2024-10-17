@@ -12,13 +12,23 @@ type jwtService struct {
 	enviroment config.Environments
 }
 
+type MyClaims struct {
+	Sub                  uint      `json:"sub"` // User ID
+	ExpiresAt            time.Time `json:"exp"` // Tempo de expiração
+	jwt.RegisteredClaims           // Embeds the standard registered claims
+}
+
 // CreateAccesstoken implements Jwt.
 func (j *jwtService) CreateAccesstoken(userId uint) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
-		&jwt.RegisteredClaims{
-			Subject:   fmt.Sprintf("%d", userId),
+
+	claim := MyClaims{
+		Sub:       userId,
+		ExpiresAt: time.Now().Add(time.Hour * 1),
+		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 1)),
-		})
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
 	tokenString, err := token.SignedString([]byte(j.enviroment.TokenSecret))
 	if err != nil {
@@ -28,22 +38,22 @@ func (j *jwtService) CreateAccesstoken(userId uint) (string, error) {
 }
 
 // DecodeAccessToken implements Jwt.
-func (j *jwtService) DecodeAccessToken(tokens string) (*jwt.MapClaims, error) {
-	token, err := jwt.Parse(tokens, func(token *jwt.Token) (interface{}, error) {
+func (j *jwtService) DecodeAccessToken(tokens string) (uint, error) {
+	token, err := jwt.ParseWithClaims(tokens, &MyClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(j.enviroment.TokenSecret), nil
 	})
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return &claims, nil
+	if claims, ok := token.Claims.(*MyClaims); ok && token.Valid {
+		return claims.Sub, nil
 	}
-	return nil, fmt.Errorf("invalid token claims")
+	return 0, fmt.Errorf("invalid token claims")
 }
 
 type Jwt interface {
 	CreateAccesstoken(userId uint) (string, error)
-	DecodeAccessToken(token string) (*jwt.MapClaims, error)
+	DecodeAccessToken(token string) (uint, error)
 }
 
 func NewJwt(envs config.Environments) Jwt {

@@ -17,6 +17,7 @@ type Environments struct {
 	DbUser string `env:"DB_USER"`
 	DbPass string `env:"DB_PASS"`
 	DbName string `env:"DB_NAME"`
+	DbSSL  string `env:"DB_SSL"`
 }
 
 func GetEnvs() Environments {
