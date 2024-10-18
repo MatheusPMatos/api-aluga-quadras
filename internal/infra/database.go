@@ -13,8 +13,8 @@ import (
 
 func ConectaComBancodeDados(envs config.Environments) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=require",
-		envs.DbHost, envs.DbUser, envs.DbPass, envs.DbName, envs.DbPort)
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		envs.DbHost, envs.DbUser, envs.DbPass, envs.DbName, envs.DbPort, envs.DbSSL)
 	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Discard,
 	})
