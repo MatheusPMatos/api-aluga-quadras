@@ -22,12 +22,15 @@ func router(router *gin.Engine, cmd handlers.Comander) {
 			user.GET("/info", cmd.User.UserInfo)
 		}
 
-		products := main.Group("products")
+		products := main.Group("/products", cmd.Midlewares.Auth())
 		{
-			products.GET("")
+			products.GET("", cmd.Products.GetAll)
+			products.POST("", cmd.Products.Create)
+			products.DELETE("", cmd.Products.Delete)
+			products.GET("/:id", cmd.Products.GetById)
 		}
 
-		reservas := main.Group("/reserva")
+		reservas := main.Group("/reserva", cmd.Midlewares.Auth())
 		{
 			reservas.GET("/byproduct/:id", cmd.Rservation.GetByProduct)
 			reservas.GET("/byuser/:id", cmd.Rservation.GetByUser)

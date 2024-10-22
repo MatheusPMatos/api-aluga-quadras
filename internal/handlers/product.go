@@ -56,7 +56,8 @@ func (p *product) Create(c *gin.Context) {
 
 	usr, err := p.sv.Create(product)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao criar produto")
+
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro ao criar produto %s", err))
 		return
 	}
 	c.JSON(http.StatusOK, usr)
@@ -70,8 +71,8 @@ func (p *product) Delete(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "invalid params")
 		return
 	}
-	if err := p.sv.Delete(uint(id)); err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao deletar produto")
+	if err := p.sv.Delete(uint(id), c.GetUint("user")); err != nil {
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, nil)
@@ -93,7 +94,7 @@ func (p *product) Edit(c *gin.Context) {
 	}
 	usr, err := p.sv.Create(product)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao editar produto")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, usr)
@@ -103,7 +104,7 @@ func (p *product) Edit(c *gin.Context) {
 func (p *product) GetAll(c *gin.Context) {
 	usr, err := p.sv.GetAll()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao buscar produtos")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, usr)
@@ -120,7 +121,7 @@ func (p *product) GetById(c *gin.Context) {
 	}
 	usr, err := p.sv.GetById(uint(id))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao buscar produto por id")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, usr)

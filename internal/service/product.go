@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"time"
 
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/repository"
@@ -8,7 +9,8 @@ import (
 )
 
 type product struct {
-	repo repository.Product
+	repo  repository.Product
+	usrRp repository.User
 }
 
 // Create implements Product.
@@ -34,8 +36,11 @@ func createSchedule() []types.Schedule {
 }
 
 // Delete implements Product.
-func (p *product) Delete(productId uint) error {
-	//SOMENTE VENDEDOR PODE DELETAR
+func (p *product) Delete(productId uint, userId uint) error {
+	usr, err := p.usrRp.GetById(userId)
+	if err != nil || usr.UsrType != types.UserTypeVendedor {
+		return errors.New("delecao nao autorizada")
+	}
 	return p.repo.Delete(productId)
 }
 
@@ -59,10 +64,10 @@ type Product interface {
 	Create(product types.Product) (*types.Product, error)
 	GetById(productId uint) (*types.Product, error)
 	GetAll() ([]types.Product, error)
-	Delete(productId uint) error
+	Delete(productId uint, userId uint) error
 	Update(product types.Product) (*types.Product, error)
 }
 
-func NewProductService(rp repository.Product) Product {
-	return &product{repo: rp}
+func NewProductService(rp repository.Product, usrRP repository.User) Product {
+	return &product{repo: rp, usrRp: usrRP}
 }

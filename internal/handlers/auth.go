@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/dto"
@@ -24,7 +25,7 @@ func (a *auth) Login(c *gin.Context) {
 
 	tokens, err := a.sv.Login(login)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err.Error())
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, tokens)

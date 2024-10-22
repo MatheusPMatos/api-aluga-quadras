@@ -24,7 +24,7 @@ func (r *reservation) Delete(c *gin.Context) {
 		return
 	}
 	if err := r.sv.Delete(uint(id)); err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao deletar produto")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, nil)
@@ -47,7 +47,7 @@ func (r *reservation) Create(c *gin.Context) {
 
 	usr, err := r.sv.Create(reserva)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao criar produto")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro ao criar produto: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, usr)
@@ -70,7 +70,7 @@ func (r *reservation) Edit(c *gin.Context) {
 
 	usr, err := r.sv.Update(reserva)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao criar produto")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, usr)
@@ -85,7 +85,7 @@ func (r *reservation) GetByProduct(c *gin.Context) {
 	}
 	reservas, err := r.sv.GetByProductID(uint(id))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao deletar produto")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, reservas)
@@ -100,7 +100,7 @@ func (r *reservation) GetByUser(c *gin.Context) {
 	}
 	reservas, err := r.sv.GetByUserId(uint(id))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao deletar produto")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, reservas)

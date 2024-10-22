@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"strconv"
 	"testing"
 
 	"github.com/MatheusPMatos/api-aluga-quadras/config"
@@ -32,22 +31,14 @@ func TestJwtDecodeToken(t *testing.T) {
 
 				t.Fatalf("error: %s", err.Error())
 			}
-			claim, err := serv.DecodeAccessToken(tk)
+			sub, err := serv.DecodeAccessToken(tk)
 			if err != nil {
 
 				t.Fatalf("error: %s", err.Error())
 			}
-			sub, err := claim.GetSubject()
-			if err != nil {
-				t.Fatalf("error: %s", err.Error())
-			}
-			id, err := strconv.Atoi(sub)
-			if err != nil {
 
-				t.Fatalf("error: %s", err.Error())
-			}
 			assert.Equal(t, tt.expectedErr, err)
-			assert.Equal(t, tt.userID, uint(id))
+			assert.Equal(t, tt.userID, sub)
 
 		})
 	}

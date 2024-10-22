@@ -36,7 +36,7 @@ func (u *userHandle) Delete(c *gin.Context) {
 	}
 
 	if err := u.sv.Delete(uint(id)); err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao deletar user")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 
@@ -59,7 +59,7 @@ func (u *userHandle) Edit(c *gin.Context) {
 	}
 	usr, err := u.sv.Update(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao alterar user")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, usr)
@@ -76,7 +76,7 @@ func (u *userHandle) GetById(c *gin.Context) {
 	}
 	usr, err := u.sv.GetById(uint(id))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao buscar user por id")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, usr)
@@ -98,7 +98,7 @@ func (u *userHandle) Create(c *gin.Context) {
 
 	usr, err := u.sv.Create(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao alterar user")
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("erro: %s", err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, usr)

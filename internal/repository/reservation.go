@@ -11,6 +11,13 @@ type reservation struct {
 	DB *gorm.DB
 }
 
+// GetById implements Reservation.
+func (r *reservation) GetById(id uint) (*types.Reservation, error) {
+	var reserva types.Reservation
+	err := r.DB.First(&reserva, id).Error
+	return &reserva, err
+}
+
 // GetByDate implements Reservation.
 func (r *reservation) GetByDate(scheduleID uint, date time.Time) (*types.Reservation, error) {
 	var reservas = types.Reservation{}
@@ -29,7 +36,7 @@ func (r *reservation) Create(reserva types.Reservation) (*types.Reservation, err
 // GetByProductID implements Reservation.
 func (r *reservation) GetByProductID(productId uint) ([]types.Reservation, error) {
 	var reservas = []types.Reservation{}
-	err := r.DB.Joins("inner join schedules on schedules.product_id = ?", productId).Find(&reservas).Error
+	err := r.DB.Joins("inner join schedules on schedules.id = reservations.id and schedules.product_id = ?", productId).Group("reservations.id").Find(&reservas).Error
 	return reservas, err
 }
 
@@ -51,7 +58,7 @@ func (r *reservation) Update(reserva types.Reservation) (*types.Reservation, err
 
 // delete implements Reservation.
 func (r *reservation) Delete(reservaId uint) error {
-	return r.DB.Delete(types.Reservation{}, reservaId).Error
+	return r.DB.Delete(&types.Reservation{}, reservaId).Error
 }
 
 type Reservation interface {
@@ -59,6 +66,7 @@ type Reservation interface {
 	Update(reserva types.Reservation) (*types.Reservation, error)
 	Delete(reservaId uint) error
 	GetByUserId(userID uint) ([]types.Reservation, error)
+	GetById(id uint) (*types.Reservation, error)
 	GetByProductID(productId uint) ([]types.Reservation, error)
 	GetByDate(scheduleID uint, date time.Time) (*types.Reservation, error)
 }

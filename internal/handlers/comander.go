@@ -23,7 +23,7 @@ func NewComander(db *gorm.DB, envs config.Environments) Comander {
 
 	return Comander{
 		User:       NewUserHandle(service.NewUserService(userRepo), validate),
-		Products:   NewProductHandler(service.NewProductService(repository.NewProductRepository(db)), validate),
+		Products:   NewProductHandler(service.NewProductService(repository.NewProductRepository(db), userRepo), validate),
 		Midlewares: service.NewMidleware(userRepo, utils.NewJwt(envs)),
 		Auth: NewAuthHandle(
 			service.NewAuthService(utils.NewJwt(envs), userRepo),
