@@ -15,3 +15,8 @@ type Schedule struct {
 	ProductID    uint          `json:"product_id"`
 	Reservations []Reservation `json:"-" gorm:"foreignkey:ScheduleID"`
 }
+type ScheduleDto struct {
+	Reserved bool      `json:"reserved"`
+	Date     time.Time `json:"date"`
+	Schedule
+}

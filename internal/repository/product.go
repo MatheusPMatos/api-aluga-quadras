@@ -23,13 +23,13 @@ func (p *product) Delete(productId uint) error {
 // GetAll implements Product.
 func (p *product) GetAll() ([]types.Product, error) {
 	var products = []types.Product{}
-	err := p.DB.Preload("Scheds").Find(&products).Error
+	err := p.DB.Find(&products).Error
 	return products, err
 }
 
 func (p *product) GetById(productId uint) (*types.Product, error) {
 	var product types.Product
-	err := p.DB.Preload("Scheds").First(&product, productId).Error
+	err := p.DB.First(&product, productId).Error
 	return &product, err
 }
 

@@ -11,6 +11,14 @@ type reservation struct {
 	DB *gorm.DB
 }
 
+// GetByProductAndDate implements Reservation.
+func (r *reservation) GetByProductAndDate(productId uint, date time.Time) ([]types.Reservation, error) {
+	var reservas = []types.Reservation{}
+	err := r.DB.Joins("inner join schedules on schedules.id = reservations.schedule_id and schedules.productId = ?", productId).
+		Where("DATE(reservation.date) = DATE(?)", date).Find(&reservas).Error
+	return reservas, err
+}
+
 // GetById implements Reservation.
 func (r *reservation) GetById(id uint) (*types.Reservation, error) {
 	var reserva types.Reservation
@@ -69,6 +77,7 @@ type Reservation interface {
 	GetById(id uint) (*types.Reservation, error)
 	GetByProductID(productId uint) ([]types.Reservation, error)
 	GetByDate(scheduleID uint, date time.Time) (*types.Reservation, error)
+	GetByProductAndDate(productId uint, date time.Time) ([]types.Reservation, error)
 }
 
 func NewReservantionRepository(db *gorm.DB) Reservation {
