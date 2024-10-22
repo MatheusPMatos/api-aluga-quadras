@@ -14,8 +14,8 @@ type reservation struct {
 // GetByProductAndDate implements Reservation.
 func (r *reservation) GetByProductAndDate(productId uint, date time.Time) ([]types.Reservation, error) {
 	var reservas = []types.Reservation{}
-	err := r.DB.Joins("inner join schedules on schedules.id = reservations.schedule_id and schedules.productId = ?", productId).
-		Where("DATE(reservation.date) = DATE(?)", date).Find(&reservas).Error
+	err := r.DB.Joins("inner join schedules on schedules.id = reservations.schedule_id and schedules.product_id = ?", productId).
+		Where("DATE(reservations.date) = DATE(?)", date).Find(&reservas).Error
 	return reservas, err
 }
 

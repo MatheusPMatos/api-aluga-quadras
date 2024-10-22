@@ -15,11 +15,13 @@ type Comander struct {
 	Midlewares service.Midleware
 	Auth       Auth
 	Rservation Reservation
+	Schedule   Schedule
 }
 
 func NewComander(db *gorm.DB, envs config.Environments) Comander {
 	userRepo := repository.NewUserRepository(db)
 	validate := validator.New(validator.WithRequiredStructEnabled())
+	reservaRp := repository.NewReservantionRepository(db)
 
 	return Comander{
 		User:       NewUserHandle(service.NewUserService(userRepo), validate),
@@ -28,7 +30,8 @@ func NewComander(db *gorm.DB, envs config.Environments) Comander {
 		Auth: NewAuthHandle(
 			service.NewAuthService(utils.NewJwt(envs), userRepo),
 		),
-		Rservation: NewReservationHandle(service.NewReservantionService(repository.NewReservantionRepository(db)), validate),
+		Rservation: NewReservationHandle(service.NewReservantionService(reservaRp), validate),
+		Schedule:   NewScheduleHandler(service.NewScheduleService(repository.NewScheduleRepository(db), reservaRp)),
 	}
 
 }

@@ -25,7 +25,7 @@ func (s *schedule) GetByProductWeekDay(produdctId uint, date time.Time) ([]types
 	if err != nil {
 		return nil, err
 	}
-next:
+
 	for _, sched := range scheds {
 		for _, reserva := range reservas {
 			if sched.ID == reserva.ScheduleID {
@@ -42,6 +42,7 @@ next:
 			Reserved: false,
 			Schedule: sched,
 		})
+	next:
 	}
 	return schedsDto, nil
 }

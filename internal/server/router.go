@@ -38,6 +38,10 @@ func router(router *gin.Engine, cmd handlers.Comander) {
 			reservas.PUT("", cmd.Rservation.Edit)
 			reservas.DELETE("/:id", cmd.Rservation.Delete)
 		}
+		schedule := main.Group("/schedule")
+		{
+			schedule.GET("/:id", cmd.Schedule.GetByProductAndDate)
+		}
 
 	}
 }
