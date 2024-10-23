@@ -17,5 +17,5 @@ type Product struct {
 	ProdType    ProductType `json:"prod_type" validate:"gte=1,lte=2"`
 	UserID      uint        `json:"user_id"`
 	Price       float64     `json:"price" validate:"required,numeric"`
-	Scheds      []Schedule  `json:"schedule,omitempty" gorm:"foreignkey:ProductID"`
+	Scheds      []Schedule  `json:"-" gorm:"foreignkey:ProductID"`
 }
