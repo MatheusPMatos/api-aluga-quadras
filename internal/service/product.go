@@ -25,8 +25,8 @@ func createSchedule() []types.Schedule {
 	for i := 0; i < 7; i++ {
 		for j := 0; j < 24; j++ {
 			scheds = append(scheds, types.Schedule{
-				InitialTime: time.Date(1899, 12, 30, j, 0, 0, 0, time.UTC),
-				FinalTime:   time.Date(1899, 12, 30, j, 59, 0, 0, time.UTC),
+				InitialTime: time.Date(1899, 12, 30, j, 0, 0, 0, time.FixedZone("UTC-3", -3*60*60)),
+				FinalTime:   time.Date(1899, 12, 30, j, 59, 0, 0, time.FixedZone("UTC-3", -3*60*60)),
 				Weekday:     time.Weekday(i),
 				Enable:      j > 6,
 			})
