@@ -34,7 +34,20 @@ func (a *auth) Login(auth dto.Auth) (*dto.Tokens, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &dto.Tokens{AccessToken: token}, nil
+	var usertype string
+	switch usr.UsrType {
+	case 1:
+		usertype = "vendedor"
+	case 2:
+		usertype = "comprador"
+	default:
+		usertype = "unknown"
+	}
+	return &dto.Tokens{
+		AccessToken: token,
+		UserName:    usr.Name,
+		Profile:     usertype,
+	}, nil
 }
 
 type Auth interface {

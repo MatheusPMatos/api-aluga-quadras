@@ -33,7 +33,7 @@ func (p *product) Update(c *gin.Context) {
 
 	usr, err := p.sv.Update(product)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "erro ao criar produto")
+		c.JSON(http.StatusInternalServerError, "erro ao editar produto")
 		return
 	}
 	c.JSON(http.StatusOK, usr)

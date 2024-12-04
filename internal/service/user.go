@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/repository"
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/types"
 	"github.com/MatheusPMatos/api-aluga-quadras/internal/utils"
@@ -18,7 +20,9 @@ func (u *user) Delete(userId uint) error {
 // Create implements User.
 func (u *user) Create(user types.User) (*types.User, error) {
 	user.Password = utils.ShaEncode(user.Password)
-	user.UsrType = types.UserTypeComprador
+	if user.UsrType != 1 && user.UsrType != 2 {
+		return nil, errors.New("invalid user profile")
+	}
 	return u.repo.Create(user)
 }
 

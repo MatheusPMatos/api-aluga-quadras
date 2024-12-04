@@ -6,5 +6,7 @@ type Auth struct {
 }
 
 type Tokens struct {
-	AccessToken string `json:"access_token"`
+	AccessToken string `json:"token"`
+	UserName    string `json:"username"`
+	Profile     string `json:"profile"`
 }

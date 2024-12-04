@@ -28,6 +28,7 @@ func router(router *gin.Engine, cmd handlers.Comander) {
 			products.POST("", cmd.Products.Create)
 			products.DELETE("", cmd.Products.Delete)
 			products.GET("/:id", cmd.Products.GetById)
+			products.PUT("", cmd.Products.Update)
 		}
 
 		reservas := main.Group("/reserva", cmd.Midlewares.Auth())
@@ -40,7 +41,7 @@ func router(router *gin.Engine, cmd handlers.Comander) {
 		}
 		schedule := main.Group("/schedule")
 		{
-			schedule.GET("/:id", cmd.Schedule.GetByProductAndDate)
+			schedule.POST("/:id", cmd.Schedule.GetByProductAndDate)
 		}
 
 	}

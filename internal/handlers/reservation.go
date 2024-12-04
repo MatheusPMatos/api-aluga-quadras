@@ -39,6 +39,11 @@ func (r *reservation) Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "invalid Json")
 		return
 	}
+
+	if reserva.UserID == 0 {
+		reserva.UserID = c.GetUint("user")
+	}
+
 	err = r.validate.Struct(reserva)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, fmt.Sprintf("validation error: %s", err.Error()))
